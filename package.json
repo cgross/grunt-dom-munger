@@ -39,7 +39,9 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "html",
+    "jquery"
   ],
   "dependencies": {
     "jsdom": "~0.5.5"
