@@ -4,7 +4,7 @@
 
 Use this task to read and transform your HTML documents.  Typical use cases include:
 
-* Read the references from your <script> or <link> tags and have those passed to `concat`,`uglify`, etc automatically.
+* Read the references from your `script` or `link` tags and have those passed to `concat`,`uglify`, etc automatically.
 * Update HTML to remove script references or anything that is not intended for your production builds.
 * Add, update, or remove any DOM elements for any reason.
 
@@ -31,7 +31,7 @@ grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        //You typically would only specify one option per target but they may be combined together if desired
+        //You typically would only specify one option per target but they may be combined
         read: {selector:'link',attribute:'href',task:'concat',target:'dist/concated.css',isPath:true},
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode',value:'production'},
@@ -43,7 +43,7 @@ grunt.initConfig({
         }
       },
       src: 'index.html', //could be an array of files
-      dest: 'dist/index.html' //optional, if not specified the src file will be overwritten with the transformed html
+      dest: 'dist/index.html' //optional, if not specified the src file will be overwritten
     },
   },
 })
@@ -70,8 +70,9 @@ grunt.initConfig({
 })
 ```
 
-Run `concat` after this task and `concat` will create `dist/app_full_min.js` using the references from your script.  No need to have any `concat` config in your Gruntfile.js beforehand.
+Run `uglify` after this task and `uglify` will create `dist/app_full_min.js` using the references from your script.  No need to have any `uglify` config in your Gruntfile.js beforehand.
 
+`task` and `target` are where you want the extracted values to be written.  When `isPath` is true, the extracted values are assumed to be file references and their path is made relative to the file they're read from.  This is usually necessary when writing the values to another grunt task like `concat` or `uglify`.
 
 #### options.remove
 Removes one or more matched elements.
