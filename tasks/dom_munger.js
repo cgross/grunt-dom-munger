@@ -74,7 +74,22 @@ module.exports = function(grunt) {
                 }
 
                 var taskConfig = grunt.config(options.read.task) || {};
-                taskConfig[options.read.target] = vals;
+                var target = taskConfig[options.read.target];
+                if (target){
+                  //append to existing target config
+                  //TODO:right now this assumes your config is dest:[src] but
+                  //thats too simplistic.  Grunt could provide some better API for updating 
+                  //target src's.
+                  if (grunt.util.kindOf(target) !== 'array'){
+                    grunt.log.error('Existing config for ' + options.read.task + '.' + options.read.target + ' cannot be appended. Dom_munger expects simplistic { dest: [src] } config.');
+                  } else {
+                    $.each(vals,function(i,val){
+                      target.push(val);
+                    });
+                  }
+                } else {
+                  taskConfig[options.read.target] = vals;  
+                }
                 grunt.config(options.read.task,taskConfig);
               }
             }
