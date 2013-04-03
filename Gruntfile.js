@@ -30,7 +30,7 @@ module.exports = function(grunt) {
     dom_munger: {
       test: {
         options: {
-          read: {selector:'link',attribute:'href',task:'concat',target:'tmp/concated.css',isPath:true},
+          read: {selector:'link',attribute:'href',writeto:'mylinks',isPath:true},
           remove: '#removeMe',
           update: {selector:'html',attribute:'appmode',value:'production'},
           append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
@@ -43,6 +43,12 @@ module.exports = function(grunt) {
         src: 'test/fixtures/index.html',
         dest: 'tmp/index.html'
       },
+    },
+    concat: {
+      test: {
+        src:['test/fixtures/css0.css','<%= dom_munger.data.mylinks %>'],
+        dest:'tmp/concated.css'
+      }
     },
     // Unit tests.
     nodeunit: {

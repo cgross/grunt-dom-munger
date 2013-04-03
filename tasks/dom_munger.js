@@ -59,8 +59,8 @@ module.exports = function(grunt) {
             }
 
             if (options.read){
-              if (!options.read.selector || !options.read.attribute || !options.read.task || !options.read.target){
-                grunt.log.error('Read config missing selector, attribute, task, and/or target options');
+              if (!options.read.selector || !options.read.attribute || !options.read.writeto){
+                grunt.log.error('Read config missing selector, attribute, and/or writeto options');
               } else {
                 var vals = $.map($(options.read.selector),function(elem){
                   return $(elem).attr(options.read.attribute);
@@ -73,24 +73,7 @@ module.exports = function(grunt) {
                   });
                 }
 
-                var taskConfig = grunt.config(options.read.task) || {};
-                var target = taskConfig[options.read.target];
-                if (target){
-                  //append to existing target config
-                  //TODO:right now this assumes your config is dest:[src] but
-                  //thats too simplistic.  Grunt could provide some better API for updating 
-                  //target src's.
-                  if (grunt.util.kindOf(target) !== 'array'){
-                    grunt.log.error('Existing config for ' + options.read.task + '.' + options.read.target + ' cannot be appended. Dom_munger expects simplistic { dest: [src] } config.');
-                  } else {
-                    $.each(vals,function(i,val){
-                      target.push(val);
-                    });
-                  }
-                } else {
-                  taskConfig[options.read.target] = vals;  
-                }
-                grunt.config(options.read.task,taskConfig);
+                grunt.config(['dom_munger','data',options.read.writeto],vals);
               }
             }
 

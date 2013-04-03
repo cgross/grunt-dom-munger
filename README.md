@@ -32,7 +32,7 @@ grunt.initConfig({
     your_target: {
       options: {
         //You typically would only specify one option per target but they may be combined
-        read: {selector:'link',attribute:'href',task:'concat',target:'dist/concated.css',isPath:true},
+        read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode',value:'production'},
         append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
@@ -55,24 +55,28 @@ grunt.initConfig({
 Note: each option (except callback) requires a `selector`.  This can be any valid JQuery selector.
 
 #### options.read 
-Extract the value of a given attribute from the set of matched elements then set the values into a grunt config of another task.  A typical use-case is to grab the script references from your html file and pass that to `concat`.
+Extract the value of a given attribute from the set of matched elements then set the values into `grunt.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        read: {selector:'script',attribute:'src',task:'uglify',target:'dist/app_full_min.js',isPath:true}
+        read: {selector:'script',attribute:'src',writeto:'myJsRefs',isPath:true}
       },
       src: 'index.html'
     },
   },
+  uglify: {
+    dist: {
+      src:['other.js','<%= dom_munger.data.myJsRefs %>'],
+      dest: 'dist/app.min.js'
+    }
+  }
 })
 ```
 
-Run `uglify` after this task and `uglify` will create `dist/app_full_min.js` using the references from your script.  No need to have any `uglify` config in your Gruntfile.js beforehand.
-
-`task` and `target` are where you want the extracted values to be written.  When `isPath` is true, the extracted values are assumed to be file references and their path is made relative to the file they're read from.  This is usually necessary when writing the values to another grunt task like `concat` or `uglify`.
+When `isPath` is true, the extracted values are assumed to be file references and their path is made relative to the file they're read from.  This is usually necessary when writing the values to another grunt task like `concat` or `uglify`.
 
 #### options.remove
 Removes one or more matched elements.
@@ -179,4 +183,5 @@ grunt.initConfig({
 
 ## Release History
 
+ * v1.0.0 - Read task modified to write values to `grunt.data` rather than to write directly to a task config.
  * v0.1.0 - Initial release.
