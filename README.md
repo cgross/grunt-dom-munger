@@ -4,7 +4,7 @@
 
 Use this task to read and transform your HTML documents.  Typical use cases include:
 
-* Read the references from your `script` or `link` tags and have those passed to `concat`,`uglify`, etc automatically.
+* Read the references from your `script` or `link` tags and pass those to `concat`,`uglify`, etc automatically.
 * Update HTML to remove script references or anything that is not intended for your production builds.
 * Add, update, or remove any DOM elements for any reason.
 
@@ -76,7 +76,7 @@ grunt.initConfig({
 })
 ```
 
-When `isPath` is true, the extracted values are assumed to be file references and their path is made relative to the file they're read from.  This is usually necessary when writing the values to another grunt task like `concat` or `uglify`.
+When `isPath` is true, the extracted values are assumed to be file references and their path is made relative to the Gruntfile.js rather than the file they're read from.  This is usually necessary when passing the values to another grunt task like `concat` or `uglify`.
 
 #### options.remove
 Removes one or more matched elements.
