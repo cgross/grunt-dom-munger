@@ -1,7 +1,7 @@
 {
   "name": "grunt-dom-munger",
   "description": "Read and manipulate HTML with jsdom and jquery.  Ex.  read <script> tags from your html.  Remove nodes, add nodes, and more.",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/cgross/grunt-dom-munger",
   "author": {
     "name": "Chris Gross",
