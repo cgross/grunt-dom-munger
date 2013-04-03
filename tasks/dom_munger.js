@@ -52,10 +52,12 @@ module.exports = function(grunt) {
             grunt.log.subhead('Processing ' + f.cyan);
 
             var $ = window.$;
+            var updated = false;
 
             if (options.remove){
               $(options.remove).remove();
               grunt.log.writeln('Removed ' + options.remove.cyan);
+              updated = true;
             }
 
             if (options.read){
@@ -74,6 +76,7 @@ module.exports = function(grunt) {
                 }
 
                 grunt.config(['dom_munger','data',options.read.writeto],vals);
+                grunt.log.writeln('Wrote ' + (options.read.selector + '.' + options.read.attribute).cyan + ' to ' + ('dom_munger.data.'+options.read.writeto).cyan);
               }
             }
 
@@ -83,6 +86,7 @@ module.exports = function(grunt) {
               } else {
                 $(options.update.selector).attr(options.update.attribute,options.update.value);
                 grunt.log.writeln('Updated ' + options.update.attribute.cyan + ' to ' + options.update.value.cyan);
+                updated = true;
               }
             }
 
@@ -92,6 +96,7 @@ module.exports = function(grunt) {
               } else {
                 $(options.append.selector).append(options.append.html);
                 grunt.log.writeln("Appended to " + options.append.selector.cyan);
+                updated = true;
               }
             }
 
@@ -101,6 +106,7 @@ module.exports = function(grunt) {
               } else {
                 $(options.prepend.selector).prepend(options.prepend.html);
                 grunt.log.writeln("Prepended to " + options.prepend.selector.cyan);
+                updated = true;
               }
             }
 
@@ -110,17 +116,21 @@ module.exports = function(grunt) {
               } else {
                 $(options.text.selector).text(options.text.text);
                 grunt.log.writeln('Applied text to ' + options.text.selector.cyan);
+                updated = true;
               }
             }
 
             if (options.callback){
-              options.callback($);
+               options.callback($);
+               //just assume its updating something
+               updated = true;
             }
 
-            var updatedContents = window.document.doctype.toString()+window.document.innerHTML;
-
-            grunt.file.write(dest || f,updatedContents);
-            grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');            
+            if (updated){
+              var updatedContents = window.document.doctype.toString()+window.document.innerHTML;
+              grunt.file.write(dest || f,updatedContents);
+              grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
+            }        
 
             countdown --;
             if (countdown === 0){
