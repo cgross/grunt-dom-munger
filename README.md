@@ -55,7 +55,7 @@ grunt.initConfig({
 Note: each option (except callback) requires a `selector`.  This can be any valid JQuery selector.
 
 #### options.read 
-Extract the value of a given attribute from the set of matched elements then set the values into `grunt.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
+Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
 ```js
 grunt.initConfig({
@@ -183,5 +183,5 @@ grunt.initConfig({
 
 ## Release History
 
- * v1.0.0 - Read task modified to write values to `grunt.data` rather than to write directly to a task config.
+ * v1.0.0 - Read task modified to write values to `dom_munger.data` rather than to write directly to a task config.
  * v0.1.0 - Initial release.
