@@ -176,9 +176,71 @@ grunt.initConfig({
       },
       src: 'index.html',
       dest: 'dist/index.html'
-    },
-  },
+    }
+  }
 })
+```
+
+## Full End-to-End Example for Concatentation and Minification
+
+The following is an example config to read your js and css references from html, concat and min them, and 
+update the html with the new combined files.
+
+This configuration would be run in this order:
+
+```shell
+grunt dom_munger:readcss dom_munger:readjs copy cssmin uglify dom_munger:updatecss dom_munger:updatejs
+```
+
+```js
+grunt.initConfig({
+  dom_munger: {
+    readcss: {
+      options: {
+          read: {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true}
+        }
+      },
+      src: 'index.html' //read from source index.html
+    },
+    readjs: {
+      options:{
+        read: {selector:'script',attribute:'src',writeto:'jsRefs',isPath:true}
+      },
+      src: 'index.html' //read from source index.html
+    },
+    updatecss: {
+      options: {
+        append: {selector:'head',html:'<link href="css/app.full.min.css" rel="stylesheet">'}
+      },
+      src:'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
+    },
+    updatejs: {
+      options: {
+        append: {selector:'body',html:'<script src="js/app.full.min.js"></script>'}
+      },
+      src: 'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
+    }
+  },
+  copy: {
+    main: {
+      files: [
+        {src: ['index.html'], dest: 'dist/'} //copy index.html to dist/index.html
+      ]
+    }
+  },
+  cssmin: {
+    main: {
+      src:'<%= dom_munger.data.cssRefs %>', //use our read css references and concat+min them
+      dest:'dist/css/app.full.min.css'
+    }
+  },
+  uglify: {
+    main: {
+      src: '<%= dom_munger.data.jsRefs %>', //use our read js references and concat+min them
+      dest:'dist/js/app.full.min.js'
+    }
+  }
+});
 ```
 
 ## Release History
