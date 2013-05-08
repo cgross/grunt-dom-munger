@@ -54,12 +54,6 @@ module.exports = function(grunt) {
             var $ = window.$;
             var updated = false;
 
-            if (options.remove){
-              $(options.remove).remove();
-              grunt.log.writeln('Removed ' + options.remove.cyan);
-              updated = true;
-            }
-
             if (options.read){
               if (!options.read.selector || !options.read.attribute || !options.read.writeto){
                 grunt.log.error('Read config missing selector, attribute, and/or writeto options');
@@ -119,6 +113,12 @@ module.exports = function(grunt) {
                 updated = true;
               }
             }
+
+            if (options.remove){
+              $(options.remove).remove();
+              grunt.log.writeln('Removed ' + options.remove.cyan);
+              updated = true;
+            }            
 
             if (options.callback){
                options.callback($);
