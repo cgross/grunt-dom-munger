@@ -32,7 +32,7 @@ grunt.initConfig({
     your_target: {
       options: {
         //You typically would only specify one option per target but they may be combined
-        read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
+        read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true, filter:function(val){return val;}},
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode',value:'production'},
         append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
@@ -55,7 +55,7 @@ grunt.initConfig({
 Note: each option (except callback) requires a `selector`.  This can be any valid JQuery selector.
 
 #### options.read 
-Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
+Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`. If you pass a `filter` function it will be called against each attribute retrieved. A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
 ```js
 grunt.initConfig({
