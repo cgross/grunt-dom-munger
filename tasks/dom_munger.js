@@ -58,8 +58,11 @@ module.exports = function(grunt) {
               if (!options.read.selector || !options.read.attribute || !options.read.writeto){
                 grunt.log.error('Read config missing selector, attribute, and/or writeto options');
               } else {
+                if(!options.read.filter) {
+                  options.read.filter = function(val) {return val;};
+                }
                 var vals = $.map($(options.read.selector),function(elem){
-                  return $(elem).attr(options.read.attribute);
+                  return options.read.filter($(elem).attr(options.read.attribute));
                 });
 
                 if (options.read.isPath){
