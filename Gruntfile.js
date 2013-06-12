@@ -30,6 +30,7 @@ module.exports = function(grunt) {
     dom_munger: {
       test: {
         options: {
+          engine:'jsdom',
           read: {selector:'link',attribute:'href',writeto:'mylinks',isPath:true},
           remove: '#removeMe',
           update: {selector:'html',attribute:'appmode',value:'production'},
@@ -43,6 +44,21 @@ module.exports = function(grunt) {
         src: 'test/fixtures/index.html',
         dest: 'tmp/index.html'
       },
+      test_cheerio: {
+        options: {
+          read: {selector:'link',attribute:'href',writeto:'mylinks',isPath:true},
+          remove: '#removeMe',
+          update: {selector:'html',attribute:'appmode',value:'production'},
+          append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
+          prepend: {selector:'body',html:'<span>Im being prepended</span>'},
+          text: {selector:'title',text:'CHANGED TITLE'},
+          callback: function($){
+            $('#sample2').text('Ive been updated via callback');
+          }
+        },
+        src: 'test/fixtures/index.html',
+        dest: 'tmp/index_cheerio.html'        
+      }
     },
     concat: {
       test: {
