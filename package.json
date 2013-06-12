@@ -1,7 +1,7 @@
 {
   "name": "grunt-dom-munger",
   "description": "Read and manipulate HTML with jquery (or cheerio).  Ex.  read <script> tags from your html.  Remove nodes, add nodes, and more.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "homepage": "https://github.com/cgross/grunt-dom-munger",
   "author": {
     "name": "Chris Gross",
