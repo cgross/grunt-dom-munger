@@ -44,7 +44,9 @@
     "jquery"
   ],
   "optionalDependencies": {
-    "jsdom": "~0.5.5",
+    "jsdom": "~0.5.5"
+  },
+  "dependencies": {
     "cheerio": "~0.12.0"
   }
 }

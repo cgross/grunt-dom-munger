@@ -182,7 +182,7 @@ grunt.initConfig({
 ```
 
 #### options.engine
-By default, `dom-munger` uses `cheerio` to read and manipulate the DOM.  Prior to version 2, `dom-munger` used 'jsdom' and `jquery` which provided more features but was harder to install on Windows and was a bit heavier.  To fallback to using `jsdom`+`jquery`, specify the `engine` option.
+By default, `dom-munger` uses `cheerio` to read and manipulate the DOM.  Prior to version 2, `dom-munger` used `jsdom` and `jquery` which provided more features but was harder to install on Windows and was a bit heavier.  To fallback to using `jsdom`+`jquery`, specify the `engine` option.
 
 ```js
 grunt.initConfig({
