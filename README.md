@@ -1,4 +1,4 @@
-# grunt-dom-munger
+# grunt-dom-munger [![Build Status](https://travis-ci.org/cgross/grunt-dom-munger.png?branch=master)](https://travis-ci.org/cgross/grunt-dom-munger)
 
 > Read and manipulate HTML documents with jsdom+jquery or cheerio.
 
@@ -9,7 +9,7 @@ Use this task to read and transform your HTML documents.  Typical use cases incl
 * Add, update, or remove any DOM elements for any reason.
 
 ## Getting Started
-This plugin requires Grunt `~0.4.1`
+This plugin requires Grunt `~0.4.1` and Node `>=0.8`.
 
 ```shell
 npm install grunt-dom-munger --save-dev
