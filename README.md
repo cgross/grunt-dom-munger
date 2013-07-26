@@ -15,7 +15,7 @@ This plugin requires Grunt `~0.4.1` and Node `>=0.8`.
 npm install grunt-dom-munger --save-dev
 ```
 
-One the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
 grunt.loadNpmTasks('grunt-dom-munger');
@@ -163,7 +163,7 @@ grunt.initConfig({
 ```
 
 #### options.callback
-When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.
+When you feel like bustin' loose, set a callback function and use the passed JQuery object to do anything you want to the HTML.
 
 ```js
 grunt.initConfig({
