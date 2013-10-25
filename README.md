@@ -34,7 +34,7 @@ grunt.initConfig({
         //You typically would only specify one option per target but they may be combined
         read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
         remove: '#removeMe',
-        update: {selector:'html',attribute:'appmode',value:'production'},
+        update: {selector:'html',attribute:'appmode', value:'production'},
         append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
         prepend: {selector:'body',html:'<span>Im being prepended</span>'},
         text: {selector:'title',text:'My App'},
@@ -102,7 +102,41 @@ grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        update: {selector:'html',attribute:'appmode',value:'production'} //set a appmode="production" on <html>
+        update: {selector:'html',attribute:'appmode', value:'production'}, //set a appmode="production" on <html>
+      },
+      src: 'index.html',
+      dest: 'dist/index.html'
+    },
+  },
+})
+```
+
+#### options.prefix
+Prepends to the value of a given attribute for the set of matched elements.
+
+```js
+grunt.initConfig({
+  dom_munger: {
+    your_target: {
+      options: {
+        prefix: {selector:'html',attribute:'appmode', value:'pre-'}, //prepend pre- to the appmode attribute, for example appmode="pre-production" on <html>
+      },
+      src: 'index.html',
+      dest: 'dist/index.html'
+    },
+  },
+})
+```
+
+#### options.suffix
+Appends to the value of a given attribute for the set of matched elements.
+
+```js
+grunt.initConfig({
+  dom_munger: {
+    your_target: {
+      options: {
+        suffix: {selector:'html',attribute:'appmode', value:'-v1'}, //append -v1 to the appmode attribute, for example appmode="production-v1" on <html>
       },
       src: 'index.html',
       dest: 'dist/index.html'
