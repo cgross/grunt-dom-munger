@@ -94,7 +94,7 @@ module.exports = function(grunt) {
     }            
 
     if (options.callback){
-       options.callback($);
+       options.callback($, f, dest);
        //just assume its updating something
        updated = true;
     }
@@ -106,7 +106,16 @@ module.exports = function(grunt) {
       } else {
         updatedContents = window.document.doctype.toString()+window.document.innerHTML;
       }
-      grunt.file.write(dest || f,updatedContents);
+      // if dest is a path, write a new file there with the same name as src
+      if (grunt.file.isDir(dest)) {
+        // extract the filename and create a new file in the dest path
+        var filename = path.basename(f);
+        var pathname = path.normalize(dest);
+        grunt.file.write(pathname + '/' + filename, updatedContents);
+      } else {
+        // Otherwise default to the old behaviour
+        grunt.file.write(dest || f,updatedContents);
+      }
       grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
     }      
 
@@ -121,8 +130,10 @@ module.exports = function(grunt) {
     var countdown = 0;
 
     if (this.filesSrc.length > 1 && this.data.dest){
-      grunt.log.error('Dest cannot be specified with multiple src files.');
-      done(false);      
+      if (grunt.file.isFile(this.data.dest)) {
+        grunt.log.error('Dest must be a folder when using multiple src files');
+        done(false);
+      } 
     }
 
     if (['jsdom','cheerio'].indexOf(options.engine) === -1){
