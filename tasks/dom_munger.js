@@ -18,7 +18,9 @@ module.exports = function(grunt) {
 
   var processFile = function(f,dest,options,$,window){
 
-    grunt.log.subhead('Processing ' + f.cyan);
+    if (!options.silent) {
+      grunt.log.subhead('Processing ' + f.cyan);
+    }
 
     var updated = false;
 
@@ -43,7 +45,10 @@ module.exports = function(grunt) {
         }
 
         grunt.config(['dom_munger','data',options.read.writeto],vals);
-        grunt.log.writeln('Wrote ' + (options.read.selector + '.' + options.read.attribute).cyan + ' to ' + ('dom_munger.data.'+options.read.writeto).cyan);
+
+        if (!options.silent) {
+          grunt.log.writeln('Wrote ' + (options.read.selector + '.' + options.read.attribute).cyan + ' to ' + ('dom_munger.data.'+options.read.writeto).cyan);
+        }
       }
     }
 
@@ -52,7 +57,10 @@ module.exports = function(grunt) {
         grunt.log.error('Update config missing selector, attribute, and/or value options');
       } else {
         $(options.update.selector).attr(options.update.attribute,options.update.value);
-        grunt.log.writeln('Updated ' + options.update.attribute.cyan + ' to ' + options.update.value.cyan);
+        
+        if (!options.silent) {
+          grunt.log.writeln('Updated ' + options.update.attribute.cyan + ' to ' + options.update.value.cyan);
+        }
         updated = true;
       }
     }
@@ -62,7 +70,10 @@ module.exports = function(grunt) {
         grunt.log.error('Append config missing selector and/or html options');
       } else {
         $(options.append.selector).append(options.append.html);
-        grunt.log.writeln("Appended to " + options.append.selector.cyan);
+        
+        if (!options.silent) {
+          grunt.log.writeln("Appended to " + options.append.selector.cyan);
+        }
         updated = true;
       }
     }
@@ -72,7 +83,10 @@ module.exports = function(grunt) {
         grunt.log.error('Prepend config missing selector and/or html options');
       } else {
         $(options.prepend.selector).prepend(options.prepend.html);
-        grunt.log.writeln("Prepended to " + options.prepend.selector.cyan);
+        
+        if (!options.silent) {
+          grunt.log.writeln("Prepended to " + options.prepend.selector.cyan);
+        }
         updated = true;
       }
     }
@@ -82,14 +96,20 @@ module.exports = function(grunt) {
         grunt.log.error('Text config missing selector and/or text options');
       } else {
         $(options.text.selector).text(options.text.text);
-        grunt.log.writeln('Applied text to ' + options.text.selector.cyan);
+        
+        if (!options.silent) {
+          grunt.log.writeln('Applied text to ' + options.text.selector.cyan);
+        }
         updated = true;
       }
     }
 
     if (options.remove){
       $(options.remove).remove();
-      grunt.log.writeln('Removed ' + options.remove.cyan);
+      
+      if (!options.silent) {
+        grunt.log.writeln('Removed ' + options.remove.cyan);
+      }
       updated = true;
     }            
 
@@ -116,7 +136,10 @@ module.exports = function(grunt) {
         // Otherwise default to the old behaviour
         grunt.file.write(dest || f,updatedContents);
       }
-      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
+
+      if (!options.silent) {
+        grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
+      }
     }      
 
   };
