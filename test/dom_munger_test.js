@@ -44,14 +44,5 @@ exports.dom_munger = {
     test.equal(actual, expected, 'should create the concat-ed css file correctly.');
 
     test.done();
-  },
-  cheerio: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/index_cheerio.html');
-    var expected = grunt.file.read('test/expected/index_cheerio.html');
-    test.equal(actual, expected, 'should update the html file with CHEERIO correctly.');
-
-    test.done();
-  }  
+  }
 };

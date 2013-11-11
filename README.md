@@ -1,6 +1,6 @@
 # grunt-dom-munger [![Build Status](https://travis-ci.org/cgross/grunt-dom-munger.png?branch=master)](https://travis-ci.org/cgross/grunt-dom-munger)
 
-> Read and manipulate HTML documents with jsdom+jquery or cheerio.
+> Read and manipulate HTML documents using CSS selectors.
 
 Use this task to read and transform your HTML documents.  Typical use cases include:
 
@@ -181,24 +181,6 @@ grunt.initConfig({
 })
 ```
 
-#### options.engine
-By default, `dom-munger` uses `cheerio` to read and manipulate the DOM.  Prior to version 2, `dom-munger` used `jsdom` and `jquery` which provided more features but was harder to install on Windows and was a bit heavier.  To fallback to using `jsdom`+`jquery`, specify the `engine` option.
-
-```js
-grunt.initConfig({
-  dom_munger: {
-    your_target: {
-      options: {
-        engine: 'jsdom',
-        ...
-      },
-      src: 'index.html',
-      dest: 'dist/index.html'
-    }
-  }
-})
-```
-
 ## Full End-to-End Example for Concatentation and Minification
 
 The following is an example config to read your js and css references from html, concat and min them, and 
@@ -262,7 +244,8 @@ grunt.initConfig({
 ```
 
 ## Release History
-
+ 
+ * v3.0.0 - Removed `jsdom` option.  Now `cheerio` only.  (more)
  * v2.0.0 - Moved to `cheerio` engine.  Upgraded jquery to v2.
  * v1.0.1 - `remove` moved to the second to last operation performed (only `callback` is later).
  * v1.0.0 - Read task modified to write values to `dom_munger.data` rather than to write directly to a task config.

@@ -7,14 +7,11 @@
  */
 'use strict';
 
-var jsdom; //only init-ed when needed = require("jsdom");
 var path = require('path');
 var fs = require('fs');
-var cheerio;// only init-ed when needed = require('cheerio');
+var cheerio = require('cheerio');
 
 module.exports = function(grunt) {
-
-  var jqueryContents;
 
   var processFile = function(f,dest,options,$,window){
 
@@ -30,10 +27,6 @@ module.exports = function(grunt) {
         var vals = $(options.read.selector).map(function(i,elem){
           return $(elem).attr(options.read.attribute);
         });
-
-        if (options.engine === 'jsdom'){
-          vals = vals.toArray();
-        }
 
         if (options.read.isPath){
           var relativeTo = path.dirname(grunt.file.expand(f));
@@ -100,12 +93,7 @@ module.exports = function(grunt) {
     }
 
     if (updated){
-      var updatedContents;
-      if (options.engine === 'cheerio'){
-        updatedContents = $.html()
-      } else {
-        updatedContents = window.document.doctype.toString()+window.document.innerHTML;
-      }
+      var updatedContents = $.html()
       grunt.file.write(dest || f,updatedContents);
       grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
     }      
@@ -114,9 +102,7 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('dom_munger', 'Read and manipulate html.', function() {
 
-    var options = this.options({
-      engine:'cheerio'
-    });
+    var options = this.options({});
     var done = this.async();
     var countdown = 0;
 
@@ -124,11 +110,6 @@ module.exports = function(grunt) {
       grunt.log.error('Dest cannot be specified with multiple src files.');
       done(false);      
     }
-
-    if (['jsdom','cheerio'].indexOf(options.engine) === -1){
-      grunt.log.error('Engine options must be either jsdom or cheerio.');
-      done(false);      
-    }    
 
     this.files.forEach(function(f) {
 
@@ -147,42 +128,13 @@ module.exports = function(grunt) {
 
         var srcContents = grunt.file.read(f);
 
-        if (options.engine === 'cheerio'){
+        var $ = cheerio.load(srcContents);
+        processFile(f,dest,options,$);
 
-          if (!cheerio){
-            cheerio = require('cheerio');
-          }
-
-          var $ = cheerio.load(srcContents);
-          processFile(f,dest,options,$);
-
-          countdown --;
-          if (countdown === 0){
-            done();
-          }          
-
-        } else {
-
-          if (!jsdom){
-            jsdom = require('jsdom');
-            jqueryContents = fs.readFileSync(path.join(__dirname,'../vendor/jquery-2.0.2.min.js'));
-          }
-
-          jsdom.env({
-            html: srcContents,
-            src: [jqueryContents],
-            done: function process(errors,window){
-
-              processFile(f,dest,options,window.$,window);
-
-              countdown --;
-              if (countdown === 0){
-                done();
-              }              
-
-            }
-          });  
-        }
+        countdown --;
+        if (countdown === 0){
+          done();
+        }          
 
       });
     });
