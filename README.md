@@ -245,6 +245,7 @@ grunt.initConfig({
 
 ## Release History
  
+ * v3.0.0 - Removed `jsdom` engine as `cheerio` is as good without needing contextify.
  * v2.0.0 - Moved to `cheerio` engine.  Upgraded jquery to v2.
  * v1.0.1 - `remove` moved to the second to last operation performed (only `callback` is later).
  * v1.0.0 - Read task modified to write values to `dom_munger.data` rather than to write directly to a task config.
