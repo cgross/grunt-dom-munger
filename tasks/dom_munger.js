@@ -28,6 +28,10 @@ module.exports = function(grunt) {
           return $(elem).attr(options.read.attribute);
         });
 
+        vals = vals.filter(function(item){
+          return item !== undefined;
+        });
+
         if (options.read.isPath){
           var relativeTo = path.dirname(grunt.file.expand(f));
           vals = vals.map(function(val){

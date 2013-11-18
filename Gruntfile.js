@@ -42,6 +42,12 @@ module.exports = function(grunt) {
         },
         src: 'test/fixtures/index.html',
         dest: 'tmp/index.html'        
+      },
+      test2: {
+        options: {
+          read: {selector:'script',attribute:'src',writeto:'test',isPath:true}
+        },
+        src: 'test/fixtures/index.html'
       }
     },
     concat: {
