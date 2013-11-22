@@ -35,7 +35,9 @@ grunt.initConfig({
         read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode', value:'production'},
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
+        prefix: {selector:'link',attribute:'href',value:'project-name/'},
+        suffix: {selector:'html',attribute:'version',value:'.0.1'},
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
         prepend: {selector:'body',html:'<span>Im being prepended</span>'},
         text: {selector:'title',text:'My App'},
         callback: function($){
@@ -119,7 +121,7 @@ grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        prefix: {selector:'html',attribute:'appmode', value:'pre-'}, //prepend pre- to the appmode attribute, for example appmode="pre-production" on <html>
+        prefix: {selector:'link',attribute:'href', value:'project-name/'}, //prepend project-name to the href attribute, for example href="project-name/next/path" on <link>
       },
       src: 'index.html',
       dest: 'dist/index.html'
@@ -136,7 +138,7 @@ grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        suffix: {selector:'html',attribute:'appmode', value:'-v1'}, //append -v1 to the appmode attribute, for example appmode="production-v1" on <html>
+        suffix: {selector:'html',attribute:'version', value:'.0.1'}, //append .0.1 to the version attribute, for example version="1.0.1" on <html>
       },
       src: 'index.html',
       dest: 'dist/index.html'
