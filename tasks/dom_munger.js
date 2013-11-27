@@ -61,19 +61,19 @@ module.exports = function(grunt) {
         $(options.prefix.selector).each(function () {
            $(this).attr(options.prefix.attribute, options.prefix.value + $(this).attr(options.prefix.attribute));
         });
-        grunt.log.writeln('Updated ' + options.prefix.attribute.cyan + ' with ' + options.prefix.value.cyan);
+        grunt.log.writeln('Prefixed ' + options.prefix.attribute.cyan + ' with ' + options.prefix.value.cyan);
         updated = true;
       }
     }
 
     if (options.suffix){
       if (!options.suffix.selector || !options.suffix.attribute || !options.suffix.value){
-        grunt.log.error('suffix config missing selector, attribute, and/or value options');
+        grunt.log.error('Suffix config missing selector, attribute, and/or value options');
       } else {
         $(options.suffix.selector).each(function () {
            $(this).attr(options.suffix.attribute, $(this).attr(options.suffix.attribute) + options.suffix.value);
         });
-        grunt.log.writeln('Updated ' + options.suffix.attribute.cyan + ' with ' + options.suffix.value.cyan);
+        grunt.log.writeln('Suffixed ' + options.suffix.attribute.cyan + ' with ' + options.suffix.value.cyan);
         updated = true;
       }
     }

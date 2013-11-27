@@ -281,6 +281,7 @@ grunt.initConfig({
 
 ## Release History
  
+ * v3.1.0 - Prefix and suffix options added.  Fixes for issues #8, #10, and #11.
  * v3.0.0 - Removed `jsdom` engine as `cheerio` is as good without needing contextify.
  * v2.0.0 - Moved to `cheerio` engine.  Upgraded jquery to v2.
  * v1.0.1 - `remove` moved to the second to last operation performed (only `callback` is later).
