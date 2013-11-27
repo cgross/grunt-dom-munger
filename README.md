@@ -34,8 +34,10 @@ grunt.initConfig({
         //You typically would only specify one option per target but they may be combined
         read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
         remove: '#removeMe',
-        update: {selector:'html',attribute:'appmode',value:'production'},
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
+        update: {selector:'html',attribute:'appmode', value:'production'},
+        prefix: {selector:'link',attribute:'href',value:'project-name/'},
+        suffix: {selector:'html',attribute:'version',value:'.0.1'},
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
         prepend: {selector:'body',html:'<span>Im being prepended</span>'},
         text: {selector:'title',text:'My App'},
         callback: function($){
@@ -102,7 +104,41 @@ grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        update: {selector:'html',attribute:'appmode',value:'production'} //set a appmode="production" on <html>
+        update: {selector:'html',attribute:'appmode', value:'production'}, //set a appmode="production" on <html>
+      },
+      src: 'index.html',
+      dest: 'dist/index.html'
+    },
+  },
+})
+```
+
+#### options.prefix
+Prepends to the value of a given attribute for the set of matched elements.
+
+```js
+grunt.initConfig({
+  dom_munger: {
+    your_target: {
+      options: {
+        prefix: {selector:'link',attribute:'href', value:'project-name/'}, //prepend project-name to the href attribute, for example href="project-name/next/path" on <link>
+      },
+      src: 'index.html',
+      dest: 'dist/index.html'
+    },
+  },
+})
+```
+
+#### options.suffix
+Appends to the value of a given attribute for the set of matched elements.
+
+```js
+grunt.initConfig({
+  dom_munger: {
+    your_target: {
+      options: {
+        suffix: {selector:'html',attribute:'version', value:'.0.1'}, //append .0.1 to the version attribute, for example version="1.0.1" on <html>
       },
       src: 'index.html',
       dest: 'dist/index.html'

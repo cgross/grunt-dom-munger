@@ -54,6 +54,30 @@ module.exports = function(grunt) {
       }
     }
 
+    if (options.prefix){
+      if (!options.prefix.selector || !options.prefix.attribute || !options.prefix.value){
+        grunt.log.error('Prefix config missing selector, attribute, and/or value options');
+      } else {
+        $(options.prefix.selector).each(function () {
+           $(this).attr(options.prefix.attribute, options.prefix.value + $(this).attr(options.prefix.attribute));
+        });
+        grunt.log.writeln('Updated ' + options.prefix.attribute.cyan + ' with ' + options.prefix.value.cyan);
+        updated = true;
+      }
+    }
+
+    if (options.suffix){
+      if (!options.suffix.selector || !options.suffix.attribute || !options.suffix.value){
+        grunt.log.error('suffix config missing selector, attribute, and/or value options');
+      } else {
+        $(options.suffix.selector).each(function () {
+           $(this).attr(options.suffix.attribute, $(this).attr(options.suffix.attribute) + options.suffix.value);
+        });
+        grunt.log.writeln('Updated ' + options.suffix.attribute.cyan + ' with ' + options.suffix.value.cyan);
+        updated = true;
+      }
+    }
+
     if (options.append){
       if (!options.append.selector || !options.append.html){
         grunt.log.error('Append config missing selector and/or html options');

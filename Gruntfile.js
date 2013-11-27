@@ -33,7 +33,9 @@ module.exports = function(grunt) {
           read: {selector:'link',attribute:'href',writeto:'mylinks',isPath:true},
           remove: '#removeMe',
           update: {selector:'html',attribute:'appmode',value:'production'},
-          append: {selector:'body',html:'<div id="appended">Im being appended</div>'}, 
+          prefix: {selector:'link',attribute:'href',value:'project-name/'},
+          suffix: {selector:'html',attribute:'version',value:'.0.1'},
+          append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
           prepend: {selector:'body',html:'<span>Im being prepended</span>'},
           text: {selector:'title',text:'CHANGED TITLE'},
           callback: function($){
@@ -41,7 +43,7 @@ module.exports = function(grunt) {
           }
         },
         src: 'test/fixtures/index.html',
-        dest: 'tmp/index.html'        
+        dest: 'tmp/index.html'
       },
       test2: {
         options: {
