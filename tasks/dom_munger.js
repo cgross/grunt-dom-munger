@@ -108,7 +108,6 @@ module.exports = function(grunt) {
 
     var options = this.options({});
     var done = this.async();
-    var countdown = 0;
 
     if (this.filesSrc.length > 1 && this.data.dest){
       grunt.log.error('Dest cannot be specified with multiple src files.');
@@ -128,21 +127,15 @@ module.exports = function(grunt) {
         }
       }).forEach(function(f){
 
-        countdown++;
-
         var srcContents = grunt.file.read(f);
 
         var $ = cheerio.load(srcContents);
         processFile(f,dest,options,$);
 
-        countdown --;
-        if (countdown === 0){
-          done();
-        }          
-
       });
     });
 
+    done();
   });
 
 };
