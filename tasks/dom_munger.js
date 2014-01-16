@@ -153,7 +153,7 @@ module.exports = function(grunt) {
 
         var srcContents = grunt.file.read(f);
 
-        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false, xmlMode:true});
+        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false, xmlMode:options.xml ? true : false});
         processFile(f,dest,options,$);
 
       });
