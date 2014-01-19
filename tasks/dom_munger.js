@@ -122,7 +122,7 @@ module.exports = function(grunt) {
 
     if (updated){
       var updatedContents = options.xml ? $.xml() : $.html();
-      grunt.file.write(dest || f,updatedContents);
+      grunt.file.write(dest || f,updatedContents.replace(/&apos;/g, "'"));
       grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
     }      
 
