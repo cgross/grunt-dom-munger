@@ -112,7 +112,7 @@ module.exports = function(grunt) {
       $(options.remove).remove();
       grunt.log.writeln('Removed ' + options.remove.cyan);
       updated = true;
-    }            
+    }
 
     if (options.callback){
        options.callback($, f);
@@ -121,10 +121,10 @@ module.exports = function(grunt) {
     }
 
     if (updated){
-      var updatedContents = $.html()
+      var updatedContents = $.html();
       grunt.file.write(dest || f,updatedContents);
-      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
-    }      
+      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');
+    }
 
   };
 
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
 
     if (this.filesSrc.length > 1 && this.data.dest){
       grunt.log.error('Dest cannot be specified with multiple src files.');
-      done(false);      
+      done(false);
     }
 
     this.files.forEach(function(f) {

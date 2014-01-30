@@ -24,7 +24,7 @@ grunt.loadNpmTasks('grunt-dom-munger');
 ## The "dom_munger" task
 
 ### Overview
-The dom-munger reads one or more HTML files and performs one or more operations on them.  
+The dom-munger reads one or more HTML files and performs one or more operations on them.
 
 ```js
 grunt.initConfig({
@@ -56,7 +56,7 @@ grunt.initConfig({
 
 Note: each option (except callback) requires a `selector`.  This can be any valid JQuery selector.
 
-#### options.read 
+#### options.read
 Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
 ```js
@@ -199,14 +199,14 @@ grunt.initConfig({
 ```
 
 #### options.callback
-When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.
+When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.  The second argument to the callback is the name of the file being processed.
 
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        callback: function($){
+        callback: function($,file){
           //do anything you want here
         }
       },
@@ -219,7 +219,7 @@ grunt.initConfig({
 
 ## Full End-to-End Example for Concatentation and Minification
 
-The following is an example config to read your js and css references from html, concat and min them, and 
+The following is an example config to read your js and css references from html, concat and min them, and
 update the html with the new combined files.
 
 This configuration would be run in this order:
@@ -280,7 +280,8 @@ grunt.initConfig({
 ```
 
 ## Release History
- 
+
+ * v3.2.0 - Added second `file` argument to callback (#15).
  * v3.1.0 - Prefix and suffix options added.  Fixes for issues #8, #10, and #11.
  * v3.0.0 - Removed `jsdom` engine as `cheerio` is as good without needing contextify.
  * v2.0.0 - Moved to `cheerio` engine.  Upgraded jquery to v2.
