@@ -38,8 +38,9 @@ module.exports = function(grunt) {
           append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
           prepend: {selector:'body',html:'<span>Im being prepended</span>'},
           text: {selector:'title',text:'CHANGED TITLE'},
-          callback: function($){
+          callback: function($, file){
             $('#sample2').text('Ive been updated via callback');
+            $('#filepath').text('Made from ' + file);
           }
         },
         src: 'test/fixtures/index.html',
