@@ -242,7 +242,7 @@ grunt dom_munger cssmin uglify
 ```js
 grunt.initConfig({
   dom_munger: {
-    read: {
+    main: {
       options: {
           read: [
             {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true},
