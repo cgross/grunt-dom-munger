@@ -1,7 +1,7 @@
 {
   "name": "grunt-dom-munger",
   "description": "Read and manipulate HTML with CSS selectors. Ex. read <script> tags from your html.  Remove nodes, add nodes, and more.",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "homepage": "https://github.com/cgross/grunt-dom-munger",
   "author": {
     "name": "Chris Gross",
@@ -30,10 +30,10 @@
   "devDependencies": {
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.1.2",
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.1.3",
-    "grunt-contrib-uglify": "~0.2.0"
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-nodeunit": "~0.3.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"

@@ -32,6 +32,7 @@ grunt.initConfig({
     your_target: {
       options: {
         //You typically would only specify one option per target but they may be combined
+        //options may also be arrays to specify multiple reads/removes/etc
         read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode', value:'production'},
@@ -54,7 +55,7 @@ grunt.initConfig({
 
 ### Options
 
-Note: each option (except callback) requires a `selector`.  This can be any valid JQuery selector.
+Note: each option (except callback) requires a `selector`.  This can be any valid CSS selector.  Also, each option (except callback) can be a single object (or String for `remove`) or an array of objects/Strings.  In this way, one target may perform multiple actions of the same type.
 
 #### options.read
 Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
@@ -225,36 +226,30 @@ update the html with the new combined files.
 This configuration would be run in this order:
 
 ```shell
-grunt dom_munger:readcss dom_munger:readjs copy cssmin uglify dom_munger:updatecss dom_munger:updatejs
+grunt dom_munger:read copy cssmin uglify dom_munger:update
 ```
 
 ```js
 grunt.initConfig({
   dom_munger: {
-    readcss: {
+    read: {
       options: {
-          read: {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true}
+          read: [
+                  {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true},
+                  {selector:'script',attribute:'src',writeto:'jsRefs',isPath:true}
+                ]
         }
       },
       src: 'index.html' //read from source index.html
     },
-    readjs: {
-      options:{
-        read: {selector:'script',attribute:'src',writeto:'jsRefs',isPath:true}
-      },
-      src: 'index.html' //read from source index.html
-    },
-    updatecss: {
+    update: {
       options: {
-        append: {selector:'head',html:'<link href="css/app.full.min.css" rel="stylesheet">'}
+        append: [
+                  {selector:'head',html:'<link href="css/app.full.min.css" rel="stylesheet">'},
+                  {selector:'body',html:'<script src="js/app.full.min.js"></script>'}
+                ]
       },
       src:'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
-    },
-    updatejs: {
-      options: {
-        append: {selector:'body',html:'<script src="js/app.full.min.js"></script>'}
-      },
-      src: 'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
     }
   },
   copy: {
@@ -281,6 +276,7 @@ grunt.initConfig({
 
 ## Release History
 
+ * v3.3.0 - All task actions can now be arrays for multiple actions per type.
  * v3.2.0 - Added second `file` argument to callback (#15).
  * v3.1.0 - Prefix and suffix options added.  Fixes for issues #8, #10, and #11.
  * v3.0.0 - Removed `jsdom` engine as `cheerio` is as good without needing contextify.
