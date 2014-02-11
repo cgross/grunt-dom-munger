@@ -11,6 +11,10 @@ var path = require('path');
 var fs = require('fs');
 var cheerio = require('cheerio');
 
+var toArray = function(value) {
+  return (Array.isArray(value)) ? value : [value];
+}
+
 module.exports = function(grunt) {
 
   var processFile = function(f,dest,options,$,window){
@@ -20,98 +24,123 @@ module.exports = function(grunt) {
     var updated = false;
 
     if (options.read){
-      if (!options.read.selector || !options.read.attribute || !options.read.writeto){
-        grunt.log.error('Read config missing selector, attribute, and/or writeto options');
-      } else {
+      options.read = toArray(options.read);
+      options.read.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.writeto){
+          grunt.log.error('Read config missing selector, attribute, and/or writeto options');
+        } else {
 
-        var vals = $(options.read.selector).map(function(i,elem){
-          return $(elem).attr(options.read.attribute);
-        });
-
-        vals = vals.filter(function(item){
-          return item !== undefined;
-        });
-
-        if (options.read.isPath){
-          var relativeTo = path.dirname(grunt.file.expand(f));
-          vals = vals.map(function(val){
-            return path.join(relativeTo,val);
+          var vals = $(option.selector).map(function(i,elem){
+            return $(elem).attr(option.attribute);
           });
+
+          vals = vals.filter(function(item){
+            return item !== undefined;
+          });
+
+          if (option.isPath){
+            var relativeTo = path.dirname(grunt.file.expand(f));
+            vals = vals.map(function(val){
+              return path.join(relativeTo,val);
+            });
+          }
+
+          grunt.config(['dom_munger','data',option.writeto],vals);
+          grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);
         }
 
-        grunt.config(['dom_munger','data',options.read.writeto],vals);
-        grunt.log.writeln('Wrote ' + (options.read.selector + '.' + options.read.attribute).cyan + ' to ' + ('dom_munger.data.'+options.read.writeto).cyan);
-      }
+      });
     }
 
     if (options.update){
-      if (!options.update.selector || !options.update.attribute || !options.update.value){
-        grunt.log.error('Update config missing selector, attribute, and/or value options');
-      } else {
-        $(options.update.selector).attr(options.update.attribute,options.update.value);
-        grunt.log.writeln('Updated ' + options.update.attribute.cyan + ' to ' + options.update.value.cyan);
-        updated = true;
-      }
+      options.update = toArray(options.update);
+      options.update.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.value){
+          grunt.log.error('Update config missing selector, attribute, and/or value options');
+        } else {
+          $(option.selector).attr(option.attribute,option.value);
+          grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.prefix){
-      if (!options.prefix.selector || !options.prefix.attribute || !options.prefix.value){
-        grunt.log.error('Prefix config missing selector, attribute, and/or value options');
-      } else {
-        $(options.prefix.selector).each(function () {
-           $(this).attr(options.prefix.attribute, options.prefix.value + $(this).attr(options.prefix.attribute));
-        });
-        grunt.log.writeln('Prefixed ' + options.prefix.attribute.cyan + ' with ' + options.prefix.value.cyan);
-        updated = true;
-      }
+      options.prefix = toArray(options.prefix);
+      options.prefix.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.value){
+          grunt.log.error('Prefix config missing selector, attribute, and/or value options');
+        } else {
+          $(option.selector).each(function () {
+             $(this).attr(option.attribute, option.value + $(this).attr(option.attribute));
+          });
+          grunt.log.writeln('Prefixed ' + option.attribute.cyan + ' with ' + option.value.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.suffix){
-      if (!options.suffix.selector || !options.suffix.attribute || !options.suffix.value){
-        grunt.log.error('Suffix config missing selector, attribute, and/or value options');
-      } else {
-        $(options.suffix.selector).each(function () {
-           $(this).attr(options.suffix.attribute, $(this).attr(options.suffix.attribute) + options.suffix.value);
-        });
-        grunt.log.writeln('Suffixed ' + options.suffix.attribute.cyan + ' with ' + options.suffix.value.cyan);
-        updated = true;
-      }
+      options.suffix = toArray(options.suffix);
+      options.suffix.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.value){
+          grunt.log.error('Suffix config missing selector, attribute, and/or value options');
+        } else {
+          $(option.selector).each(function () {
+             $(this).attr(option.attribute, $(this).attr(option.attribute) + option.value);
+          });
+          grunt.log.writeln('Suffixed ' + option.attribute.cyan + ' with ' + option.value.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.append){
-      if (!options.append.selector || !options.append.html){
-        grunt.log.error('Append config missing selector and/or html options');
-      } else {
-        $(options.append.selector).append(options.append.html);
-        grunt.log.writeln("Appended to " + options.append.selector.cyan);
-        updated = true;
-      }
+      options.append = toArray(options.append);
+      options.append.forEach(function(option) {
+        if (!option.selector || !option.html){
+          grunt.log.error('Append config missing selector and/or html options');
+        } else {
+          $(option.selector).append(option.html);
+          grunt.log.writeln("Appended to " + option.selector.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.prepend){
-      if (!options.prepend.selector || !options.prepend.html){
-        grunt.log.error('Prepend config missing selector and/or html options');
-      } else {
-        $(options.prepend.selector).prepend(options.prepend.html);
-        grunt.log.writeln("Prepended to " + options.prepend.selector.cyan);
-        updated = true;
-      }
+      options.prepend = toArray(options.prepend);
+      options.prepend.forEach(function(option) {
+        if (!option.selector || !option.html){
+          grunt.log.error('Prepend config missing selector and/or html options');
+        } else {
+          $(option.selector).prepend(option.html);
+          grunt.log.writeln("Prepended to " + option.selector.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.text){
-      if (!options.text.selector || !options.text.text){
-        grunt.log.error('Text config missing selector and/or text options');
-      } else {
-        $(options.text.selector).text(options.text.text);
-        grunt.log.writeln('Applied text to ' + options.text.selector.cyan);
-        updated = true;
-      }
+      options.text = toArray(options.text);
+      options.text.forEach(function(option) {
+        if (!option.selector || !option.text){
+          grunt.log.error('Text config missing selector and/or text options');
+        } else {
+          $(option.selector).text(option.text);
+          grunt.log.writeln('Applied text to ' + option.selector.cyan);
+          updated = true;
+        }
+      });
     }
 
     if (options.remove){
-      $(options.remove).remove();
-      grunt.log.writeln('Removed ' + options.remove.cyan);
-      updated = true;
+      options.remove = toArray(options.remove);
+      options.remove.forEach(function(option) {
+        $(option).remove();
+        grunt.log.writeln('Removed ' + option.cyan);
+        updated = true;
+      });
     }
 
     if (options.callback){
