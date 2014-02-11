@@ -255,8 +255,8 @@ grunt.initConfig({
           ]
         }
       },
-      src: 'index.html', //read from source index.html
-      dest: 'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
+      src: 'index.html',
+      dest: 'dist/index.html'
     },
   },
   cssmin: {
