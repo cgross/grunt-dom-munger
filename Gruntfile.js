@@ -72,6 +72,26 @@ module.exports = function(grunt) {
         },
         src: 'test/fixtures/index.html',
         dest: 'tmp/index.html'
+      },
+      test_order: { //order should be read then remove then any other update operations
+        options: {
+          read: [
+            {selector:'link',attribute:'href',writeto:'links_order',isPath:true},
+            {selector:'script',attribute:'src',writeto:'scripts_order',isPath:true}
+          ],
+          remove: ['script','link'],
+          append: [
+            {selector:'head',html:'<link href="concat.css">'},
+            {selector:'body',html:'<script src="concat.js">'}
+          ]
+        },
+        src: 'test/fixtures/order.html',
+        dest: 'tmp/order.html'
+      }
+    },
+    write_src: {
+      test: {
+        src: ['<%= dom_munger.data.links_order %>','<%= dom_munger.data.scripts_order %>']
       }
     },
     concat: {
@@ -100,9 +120,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
 
+  grunt.registerMultiTask('write_src', 'Testing task.  Writes src files to file.', function() {
+    var fs = require('fs');
+    fs.writeFileSync('tmp/read_order.txt',JSON.stringify(this.filesSrc));
+  });
+
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'dom_munger', 'concat', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'dom_munger', 'write_src', 'concat', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

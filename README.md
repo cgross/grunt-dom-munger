@@ -218,6 +218,16 @@ grunt.initConfig({
 })
 ```
 
+### Quick Note About Ordering
+
+When specifying multiple actions for a single task, the order of the actions is always:
+
+* `read` actions
+* `remove` actions
+* all other actions
+
+This ensures that you can use one task to read script or link tags, then remove them, then append tags containing the concatentated/minified references.
+
 ## Full End-to-End Example for Concatentation and Minification
 
 The following is an example config to read your js and css references from html, concat and min them, and
@@ -226,7 +236,7 @@ update the html with the new combined files.
 This configuration would be run in this order:
 
 ```shell
-grunt dom_munger:read copy cssmin uglify dom_munger:update
+grunt dom_munger cssmin uglify
 ```
 
 ```js
@@ -235,29 +245,19 @@ grunt.initConfig({
     read: {
       options: {
           read: [
-                  {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true},
-                  {selector:'script',attribute:'src',writeto:'jsRefs',isPath:true}
-                ]
+            {selector:'link',attribute:'href',writeto:'cssRefs',isPath:true},
+            {selector:'script',attribute:'src',writeto:'jsRefs',isPath:true}
+          ],
+          remove: ['link','script'],
+          append: [
+            {selector:'head',html:'<link href="css/app.full.min.css" rel="stylesheet">'},
+            {selector:'body',html:'<script src="js/app.full.min.js"></script>'}
+          ]
         }
       },
-      src: 'index.html' //read from source index.html
+      src: 'index.html', //read from source index.html
+      dest: 'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
     },
-    update: {
-      options: {
-        append: [
-                  {selector:'head',html:'<link href="css/app.full.min.css" rel="stylesheet">'},
-                  {selector:'body',html:'<script src="js/app.full.min.js"></script>'}
-                ]
-      },
-      src:'dist/index.html'  //update the dist/index.html (the src index.html is copied there)
-    }
-  },
-  copy: {
-    main: {
-      files: [
-        {src: ['index.html'], dest: 'dist/'} //copy index.html to dist/index.html
-      ]
-    }
   },
   cssmin: {
     main: {
@@ -275,7 +275,7 @@ grunt.initConfig({
 ```
 
 ## Release History
-
+ * v3.4.0 - Update task actions ordering.  Reads always first, removes second, all others after.
  * v3.3.0 - All task actions can now be arrays for multiple actions per type.
  * v3.2.0 - Added second `file` argument to callback (#15).
  * v3.1.0 - Prefix and suffix options added.  Fixes for issues #8, #10, and #11.

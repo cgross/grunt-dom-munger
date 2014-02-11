@@ -44,5 +44,18 @@ exports.dom_munger = {
     test.equal(actual, expected, 'should create the concat-ed css file correctly.');
 
     test.done();
+  },
+  order: function(test) {
+    test.expect(2);
+
+    var actual = grunt.file.read('tmp/order.html');
+    var expected = grunt.file.read('test/expected/order.html');
+    test.equal(actual, expected, 'should update the file in the order expected.');
+
+    actual = grunt.file.read('tmp/read_order.txt');
+    expected = grunt.file.read('test/expected/read_order.txt');
+    test.equal(actual, expected, 'should save the read elements ensuring that the elements were read before the HTML was updated.');
+
+    test.done();
   }
 };

@@ -52,6 +52,15 @@ module.exports = function(grunt) {
       });
     }
 
+    if (options.remove){
+      options.remove = toArray(options.remove);
+      options.remove.forEach(function(option) {
+        $(option).remove();
+        grunt.log.writeln('Removed ' + option.cyan);
+        updated = true;
+      });
+    }
+
     if (options.update){
       options.update = toArray(options.update);
       options.update.forEach(function(option) {
@@ -131,15 +140,6 @@ module.exports = function(grunt) {
           grunt.log.writeln('Applied text to ' + option.selector.cyan);
           updated = true;
         }
-      });
-    }
-
-    if (options.remove){
-      options.remove = toArray(options.remove);
-      options.remove.forEach(function(option) {
-        $(option).remove();
-        grunt.log.writeln('Removed ' + option.cyan);
-        updated = true;
       });
     }
 
