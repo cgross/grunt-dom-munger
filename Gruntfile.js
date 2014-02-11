@@ -51,12 +51,37 @@ module.exports = function(grunt) {
           read: {selector:'script',attribute:'src',writeto:'test',isPath:true}
         },
         src: 'test/fixtures/index.html'
+      },
+      test3: {
+        options: {
+          read: [
+            {selector:'link',attribute:'href',writeto:'mylinks',isPath:true},
+            {selector:'script[src]',attribute:'src',writeto:'myscripts',isPath:true}
+          ],
+          remove: ['#removeMe'],
+          update: [{selector:'html',attribute:'appmode',value:'production'}],
+          prefix: [{selector:'link',attribute:'href',value:'project-name/'}],
+          suffix: [{selector:'html',attribute:'version',value:'.0.1'}],
+          append: [{selector:'body',html:'<div id="appended">Im being appended</div>'}],
+          prepend: [{selector:'body',html:'<span>Im being prepended</span>'}],
+          text: [
+            {selector:'title',text:'CHANGED TITLE'},
+            {selector:'#sample2',text:'Ive been updated via callback'},
+            {selector:'#filepath',text:'Made from test/fixtures/index.html'}
+          ],
+        },
+        src: 'test/fixtures/index.html',
+        dest: 'tmp/index.html'
       }
     },
     concat: {
       test: {
         src:['test/fixtures/css0.css','<%= dom_munger.data.mylinks %>'],
         dest:'tmp/concated.css'
+      },
+      test3: {
+        src:['<%= dom_munger.data.myscripts %>'],
+        dest:'tmp/concated.js'
       }
     },
     // Unit tests.
