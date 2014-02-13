@@ -32,8 +32,11 @@ grunt.initConfig({
     your_target: {
       options: {
         //You typically would only specify one option per target but they may be combined
-        //options may also be arrays to specify multiple reads/removes/etc
-        read: {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
+        //All options (except callback) can be arrays
+        read: [
+          {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
+          {selector:'script[src]',attribute:'src',writeto:'myJsRefs',isPath:true}
+        ],
         remove: '#removeMe',
         update: {selector:'html',attribute:'appmode', value:'production'},
         prefix: {selector:'link',attribute:'href',value:'project-name/'},
