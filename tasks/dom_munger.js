@@ -34,43 +34,36 @@ module.exports = function(grunt) {
             return $(elem).attr(option.attribute);
           });
 
-          vals = vals.filter(function(item){
-            return item !== undefined;
-          });
-
           if (option.isPath){
-            var relativeTo = path.dirname(grunt.file.expand(f));
-            vals = vals.map(function(val){
-              return path.join(relativeTo,val);
+            option.isPath = path.dirname(grunt.file.expand(f));
+          }
+
+          if (option.callback) {
+            var newVals = [];
+            vals.forEach(function(item){
+              item = option.callback(item);
+              if (item) {
+                if (option.isPath)
+                  item = path.join(option.isPath,item);
+                newVals.push(item);
+              }
             });
+            vals = newVals;
+          } else {
+            vals = vals.filter(function(item){
+              return item !== undefined;
+            });
+            if (option.isPath) {
+              vals = vals.map(function(item){
+                return path.join(option.isPath,item);
+              });
+            }
           }
 
           grunt.config(['dom_munger','data',option.writeto],vals);
           grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);
         }
 
-      });
-    }
-
-    if (options.remove){
-      options.remove = toArray(options.remove);
-      options.remove.forEach(function(option) {
-        $(option).remove();
-        grunt.log.writeln('Removed ' + option.cyan);
-        updated = true;
-      });
-    }
-
-    if (options.update){
-      options.update = toArray(options.update);
-      options.update.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.value){
-          grunt.log.error('Update config missing selector, attribute, and/or value options');
-        } else {
-          $(option.selector).attr(option.attribute,option.value);
-          grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
-          updated = true;
-        }
       });
     }
 
@@ -104,32 +97,6 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.append){
-      options.append = toArray(options.append);
-      options.append.forEach(function(option) {
-        if (!option.selector || !option.html){
-          grunt.log.error('Append config missing selector and/or html options');
-        } else {
-          $(option.selector).append(option.html);
-          grunt.log.writeln("Appended to " + option.selector.cyan);
-          updated = true;
-        }
-      });
-    }
-
-    if (options.prepend){
-      options.prepend = toArray(options.prepend);
-      options.prepend.forEach(function(option) {
-        if (!option.selector || !option.html){
-          grunt.log.error('Prepend config missing selector and/or html options');
-        } else {
-          $(option.selector).prepend(option.html);
-          grunt.log.writeln("Prepended to " + option.selector.cyan);
-          updated = true;
-        }
-      });
-    }
-
     if (options.text){
       options.text = toArray(options.text);
       options.text.forEach(function(option) {
@@ -143,6 +110,43 @@ module.exports = function(grunt) {
       });
     }
 
+    if (options.update){
+      options.update = toArray(options.update);
+      options.update.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.value){
+          grunt.log.error('Update config missing selector, attribute, and/or value options');
+        } else {
+          $(option.selector).attr(option.attribute,option.value);
+          grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
+          updated = true;
+        }
+      });
+    }
+
+    ['prepend', 'append', 'before', 'after', 'replace'].forEach(function(method){
+      if (options[method]) {
+        options[method] = toArray(options[method]);
+        options[method].forEach(function(option){
+          if (!option.selector || !option.html){
+            grunt.log.error('Config for "'+method+'" missing selector and/or html options');
+          } else {
+            $(option.selector)[method](option.html);
+            grunt.log.writeln("Performed '"+method+"' to " + option.selector.cyan);
+            updated = true;
+          }
+        });
+      }
+    });
+
+    if (options.remove){
+      options.remove = toArray(options.remove);
+      options.remove.forEach(function(option) {
+        $(option).remove();
+        grunt.log.writeln('Removed ' + option.cyan);
+        updated = true;
+      });
+    }
+
     if (options.callback){
        options.callback($, f);
        //just assume its updating something
@@ -150,9 +154,9 @@ module.exports = function(grunt) {
     }
 
     if (updated){
-      var updatedContents = $.html();
+      var updatedContents = options.xml ? $.xml() : $.html();
       grunt.file.write(dest || f,updatedContents);
-      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');
+      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
     }
 
   };
@@ -182,7 +186,7 @@ module.exports = function(grunt) {
 
         var srcContents = grunt.file.read(f);
 
-        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false});
+        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false, xmlMode:options.xml ? true : false});
         processFile(f,dest,options,$);
 
       });

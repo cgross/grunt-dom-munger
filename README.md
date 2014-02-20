@@ -24,7 +24,7 @@ grunt.loadNpmTasks('grunt-dom-munger');
 ## The "dom_munger" task
 
 ### Overview
-The dom-munger reads one or more HTML files and performs one or more operations on them.
+The dom-munger reads one or more HTML files and performs one or more operations on them (in the order shown below).
 
 ```js
 grunt.initConfig({
@@ -34,16 +34,19 @@ grunt.initConfig({
         //You typically would only specify one option per target but they may be combined
         //All options (except callback) can be arrays
         read: [
-          {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
+          {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true,callback:function(val){return val;}},
           {selector:'script[src]',attribute:'src',writeto:'myJsRefs',isPath:true}
         ],
-        remove: '#removeMe',
-        update: {selector:'html',attribute:'appmode', value:'production'},
         prefix: {selector:'link',attribute:'href',value:'project-name/'},
         suffix: {selector:'html',attribute:'version',value:'.0.1'},
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
-        prepend: {selector:'body',html:'<span>Im being prepended</span>'},
         text: {selector:'title',text:'My App'},
+        update: {selector:'html',attribute:'appmode', value:'production'},
+        prepend: {selector:'body',html:'<span>Im being prepended</span>'},
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
+        before: {selector:'#app',html:'<h1>Im being added before #app</h1>'},
+        after: {selector:'#nav',html:'<h1>Im being added after #nav</h1>'},
+        replace: {selector:'link[rel="stylesheet/less"]',html:'<link rel="stylesheet" src="styles.css">'},
+        remove: '#removeMe',
         callback: function($){
           $('#sample2').text('Ive been updated via callback');
         }
@@ -63,12 +66,14 @@ Note: each option (except callback) requires a `selector`.  This can be any vali
 #### options.read
 Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
+The optional callback function will run against every match found and can either return a new value wish to use instead or false if you want the value to be excluded.
+
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        read: {selector:'script',attribute:'src',writeto:'myJsRefs',isPath:true}
+        read: {selector:'script',attribute:'src',writeto:'myJsRefs',isPath:true,callback:function(val){return val;}}
       },
       src: 'index.html'
     },
@@ -151,31 +156,15 @@ grunt.initConfig({
 })
 ```
 
-#### options.append
-Appends the content to each matched element.
+#### options.append, options.prepend, options.replace, options.before, options.after
+Performs the relevant operation to each matched element.
 
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'}
-      },
-      src: 'index.html',
-      dest: 'dist/index.html'
-    },
-  },
-})
-```
-
-#### options.prepend
-Prepends the content to each matched element.
-
-```js
-grunt.initConfig({
-  dom_munger: {
-    your_target: {
-      options: {
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
         prepend: {selector:'body',html:'<span>Im being prepended</span>'}
       },
       src: 'index.html',
@@ -203,7 +192,7 @@ grunt.initConfig({
 ```
 
 #### options.callback
-When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.  The second argument to the callback is the name of the file being processed.
+When you feel like bustin' loose, set a callback function and use the passed JQuery object to do anything you want to the HTML.  The second argument to the callback is the name of the file being processed.
 
 ```js
 grunt.initConfig({
