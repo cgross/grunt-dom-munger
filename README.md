@@ -24,7 +24,7 @@ grunt.loadNpmTasks('grunt-dom-munger');
 ## The "dom_munger" task
 
 ### Overview
-The dom-munger reads one or more HTML files and performs one or more operations on them.
+The dom-munger reads one or more HTML files and performs one or more operations on them (in the order shown below).
 
 ```js
 grunt.initConfig({
@@ -37,13 +37,16 @@ grunt.initConfig({
           {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
           {selector:'script[src]',attribute:'src',writeto:'myJsRefs',isPath:true}
         ],
-        remove: '#removeMe',
-        update: {selector:'html',attribute:'appmode', value:'production'},
+        text: {selector:'title',text:'My App'},
         prefix: {selector:'link',attribute:'href',value:'project-name/'},
         suffix: {selector:'html',attribute:'version',value:'.0.1'},
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
         prepend: {selector:'body',html:'<span>Im being prepended</span>'},
-        text: {selector:'title',text:'My App'},
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
+        before: {selector:'#app',html:'<h1>Im being added before #app</h1>'},
+        after: {selector:'#nav',html:'<h1>Im being added after #nav</h1>'},
+        replace: {selector:'link[rel="stylesheet/less"]',html:'<link rel="stylesheet" src="styles.css">'},
+        update: {selector:'html',attribute:'appmode', value:'production'},
+        remove: '#removeMe',
         callback: function($){
           $('#sample2').text('Ive been updated via callback');
         }
