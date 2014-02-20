@@ -34,16 +34,27 @@ module.exports = function(grunt) {
             return $(elem).attr(option.attribute);
           });
 
-          vals = vals.filter(function(item){
-            return item !== undefined;
-          });
-
           if (option.isPath){
-            var relativeTo = path.dirname(grunt.file.expand(f));
-            vals = vals.map(function(val){
-              return path.join(relativeTo,val);
+            option.isPath = path.dirname(grunt.file.expand(f));
+          }
+
+          if (option.callback) {
+            var newVals = [];
+            vals.forEach(function(item){
+              item = option.callback(item);
+              if (item) {
+                if (option.isPath)
+                  item = path.join(relativeTo,item);
+                newVals.push(item);
+              }
+            });
+            vals = newVals;
+          } else {
+            vals = vals.filter(function(item){
+              return item !== undefined;
             });
           }
+
 
           grunt.config(['dom_munger','data',option.writeto],vals);
           grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);

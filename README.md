@@ -34,7 +34,7 @@ grunt.initConfig({
         //You typically would only specify one option per target but they may be combined
         //All options (except callback) can be arrays
         read: [
-          {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true},
+          {selector:'link',attribute:'href',writeto:'myCssRefs',isPath:true,callback:function(val){return val;}},
           {selector:'script[src]',attribute:'src',writeto:'myJsRefs',isPath:true}
         ],
         text: {selector:'title',text:'My App'},
@@ -66,12 +66,14 @@ Note: each option (except callback) requires a `selector`.  This can be any vali
 #### options.read
 Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
+The optional callback function will run against every match found and can either return a new value wish to use instead or false if you want the value to be excluded.
+
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        read: {selector:'script',attribute:'src',writeto:'myJsRefs',isPath:true}
+        read: {selector:'script',attribute:'src',writeto:'myJsRefs',isPath:true,callback:function(val){return val;}}
       },
       src: 'index.html'
     },
@@ -154,31 +156,15 @@ grunt.initConfig({
 })
 ```
 
-#### options.append
-Appends the content to each matched element.
+#### options.append, options.prepend, options.replace, options.before, options.after
+Performs the relevant operation to each matched element.
 
 ```js
 grunt.initConfig({
   dom_munger: {
     your_target: {
       options: {
-        append: {selector:'body',html:'<div id="appended">Im being appended</div>'}
-      },
-      src: 'index.html',
-      dest: 'dist/index.html'
-    },
-  },
-})
-```
-
-#### options.prepend
-Prepends the content to each matched element.
-
-```js
-grunt.initConfig({
-  dom_munger: {
-    your_target: {
-      options: {
+        append: {selector:'body',html:'<div id="appended">Im being appended</div>'},
         prepend: {selector:'body',html:'<span>Im being prepended</span>'}
       },
       src: 'index.html',
