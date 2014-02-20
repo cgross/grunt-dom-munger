@@ -44,7 +44,7 @@ module.exports = function(grunt) {
               item = option.callback(item);
               if (item) {
                 if (option.isPath)
-                  item = path.join(relativeTo,item);
+                  item = path.join(option.isPath,item);
                 newVals.push(item);
               }
             });
@@ -53,8 +53,12 @@ module.exports = function(grunt) {
             vals = vals.filter(function(item){
               return item !== undefined;
             });
+            if (option.isPath) {
+              vals = vals.map(function(item){
+                return path.join(option.isPath,item);
+              });
+            }
           }
-
 
           grunt.config(['dom_munger','data',option.writeto],vals);
           grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);
