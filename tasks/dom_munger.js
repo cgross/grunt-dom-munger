@@ -63,19 +63,6 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.text){
-      options.text = toArray(options.text);
-      options.text.forEach(function(option) {
-        if (!option.selector || !option.text){
-          grunt.log.error('Text config missing selector and/or text options');
-        } else {
-          $(option.selector).text(option.text);
-          grunt.log.writeln('Applied text to ' + option.selector.cyan);
-          updated = true;
-        }
-      });
-    }
-
     if (options.prefix){
       options.prefix = toArray(options.prefix);
       options.prefix.forEach(function(option) {
@@ -106,6 +93,32 @@ module.exports = function(grunt) {
       });
     }
 
+    if (options.text){
+      options.text = toArray(options.text);
+      options.text.forEach(function(option) {
+        if (!option.selector || !option.text){
+          grunt.log.error('Text config missing selector and/or text options');
+        } else {
+          $(option.selector).text(option.text);
+          grunt.log.writeln('Applied text to ' + option.selector.cyan);
+          updated = true;
+        }
+      });
+    }
+
+    if (options.update){
+      options.update = toArray(options.update);
+      options.update.forEach(function(option) {
+        if (!option.selector || !option.attribute || !option.value){
+          grunt.log.error('Update config missing selector, attribute, and/or value options');
+        } else {
+          $(option.selector).attr(option.attribute,option.value);
+          grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
+          updated = true;
+        }
+      });
+    }
+
     ['prepend', 'append', 'before', 'after', 'replace'].forEach(function(method){
       if (options[method]) {
         options[method] = toArray(options[method]);
@@ -120,19 +133,6 @@ module.exports = function(grunt) {
         });
       }
     });
-
-    if (options.update){
-      options.update = toArray(options.update);
-      options.update.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.value){
-          grunt.log.error('Update config missing selector, attribute, and/or value options');
-        } else {
-          $(option.selector).attr(option.attribute,option.value);
-          grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
-          updated = true;
-        }
-      });
-    }
 
     if (options.remove){
       options.remove = toArray(options.remove);
