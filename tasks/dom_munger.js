@@ -150,9 +150,9 @@ module.exports = function(grunt) {
     }
 
     if (updated){
-      var updatedContents = $.html();
+      var updatedContents = options.xml ? $.xml() : $.html();
       grunt.file.write(dest || f,updatedContents);
-      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');
+      grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');    
     }
 
   };
@@ -182,7 +182,7 @@ module.exports = function(grunt) {
 
         var srcContents = grunt.file.read(f);
 
-        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false});
+        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false, xmlMode:options.xml ? true : false});
         processFile(f,dest,options,$);
 
       });
