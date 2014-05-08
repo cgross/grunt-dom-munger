@@ -150,7 +150,7 @@ module.exports = function(grunt) {
     }
 
     if (updated){
-      var updatedContents = $.html();
+      var updatedContents = (options.xmlMode) ? $.xml() : $.html();
       grunt.file.write(dest || f,updatedContents);
       grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');
     }
