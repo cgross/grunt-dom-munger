@@ -73,6 +73,14 @@ module.exports = function(grunt) {
         src: 'test/fixtures/index.html',
         dest: 'tmp/index.html'
       },
+      test_callback_read: {
+        options: {
+          callback: function ($, file) {
+            return false;
+          }
+        },
+        src: 'test/fixtures/formatted.html'
+      },
       test_order: { //order should be read then remove then any other update operations
         options: {
           read: [

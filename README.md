@@ -203,7 +203,7 @@ grunt.initConfig({
 ```
 
 #### options.callback
-When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.  The second argument to the callback is the name of the file being processed.
+When you feel like bustin loose.  Set a callback function and use the passed JQuery object to do anything you want to the HTML.  The second argument to the callback is the name of the file being processed.  If the callback function returns `false` the source file is assumed to only have been read and no output will be written.
 
 ```js
 grunt.initConfig({
