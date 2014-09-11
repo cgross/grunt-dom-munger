@@ -144,9 +144,8 @@ module.exports = function(grunt) {
     }
 
     if (options.callback){
-       options.callback($, f);
-       //just assume its updating something
-       updated = true;
+      // don't update if callback function returns false
+      updated = options.callback($, f) !== false;
     }
 
     if (updated){

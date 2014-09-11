@@ -57,5 +57,14 @@ exports.dom_munger = {
     test.equal(actual, expected, 'should save the read elements ensuring that the elements were read before the HTML was updated.');
 
     test.done();
+  },
+  callback_return_false: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('test/fixtures/formatted.html');
+    var expected = grunt.file.read('test/fixtures/formatted_expected.html');
+    test.equal(actual, expected, 'should not modify the source files when callback returns false.');
+
+    test.done();
   }
 };
