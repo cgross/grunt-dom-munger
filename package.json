@@ -45,6 +45,6 @@
     "cheerio"
   ],
   "dependencies": {
-    "cheerio": "~0.12.3"
+    "cheerio": "~0.18.0"
   }
 }
