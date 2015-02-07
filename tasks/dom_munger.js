@@ -40,8 +40,12 @@ module.exports = function(grunt) {
 
           if (option.isPath){
             var relativeTo = path.dirname(grunt.file.expand(f));
-            vals = vals.map(function(val){
-              return path.join(relativeTo,val);
+            var files = [];
+            for (var i = 0; i < vals.length; i++) {
+              files.push(vals[i]);
+            }
+            vals = files.map(function(file){
+              return path.join(relativeTo, file);
             });
           }
 
