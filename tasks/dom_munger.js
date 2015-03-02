@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         } else {
 
           var vals = $(option.selector).map(function(i,elem){
-            return $(elem).attr(option.attribute);
+            return (option.attribute === 'html') ? $(elem).html() : $(elem).attr(option.attribute);
           });
 
           vals = vals.filter(function(item){
