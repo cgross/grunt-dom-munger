@@ -44,7 +44,20 @@ module.exports = function(grunt) {
               return path.join(relativeTo,val);
             });
           }
+          // provide SrcMap in case of multiple sources
+          var srcMap = grunt.config(['dom_munger','data',option.writeto + "SrcMap"]);
+          if (srcMap === undefined) {
+            srcMap = {}
+          }
 
+          if (vals === undefined) {
+            srcMap[f] = [];
+          } else {
+            srcMap[f] = vals;
+          }
+          
+          grunt.config(['dom_munger','data',option.writeto + "SrcMap"] , srcMap);
+          
           grunt.config(['dom_munger','data',option.writeto],vals);
           grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);
         }
