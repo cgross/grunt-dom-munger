@@ -61,7 +61,7 @@ grunt.initConfig({
 Note: each option (except callback) requires a `selector`.  This can be any valid CSS selector.  Also, each option (except callback) can be a single object (or String for `remove`) or an array of objects/Strings.  In this way, one target may perform multiple actions of the same type.
 
 #### options.read
-Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`.  A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
+Extract the value of a given attribute from the set of matched elements then set the values into `dom_munger.data.{writeto}`. In case of a source array, a source map object is available under `dom_munger.data.{writeto}SrcMap`. A typical use-case is to grab the script references from your html file and pass that to `concat`,`uglify`, or `cssmin`.
 
 ```js
 grunt.initConfig({
