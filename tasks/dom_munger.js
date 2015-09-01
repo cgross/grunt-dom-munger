@@ -181,7 +181,7 @@ module.exports = function(grunt) {
 
         var srcContents = grunt.file.read(f);
 
-        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false});
+        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false, decodeEntities: false});
         processFile(f,dest,options,$);
 
       });
