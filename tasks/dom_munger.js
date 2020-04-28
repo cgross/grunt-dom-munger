@@ -39,7 +39,7 @@ module.exports = function(grunt) {
           });
 
           if (option.isPath){
-            var relativeTo = path.dirname(grunt.file.expand(f));
+            var relativeTo = path.dirname(grunt.file.expand(f)[0]);
             vals = vals.map(function(val){
               return path.join(relativeTo,val);
             });
