@@ -22,7 +22,6 @@ module.exports = function(grunt) {
     grunt.log.subhead('Processing ' + f.cyan);
 
     var updated = false;
-
     if (options.read){
       options.read = toArray(options.read);
       options.read.forEach(function(option) {
