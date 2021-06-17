@@ -47,7 +47,7 @@ jobs:
       - name: Run Tests
         run: npm test
       - name: Publish Release Packages
-        if: startsWith(github.ref, 'refs/tags/') && matrix.os == 'ubuntu-latest'
+        if: startsWith(github.ref, 'refs/tags/v') && matrix.os == 'ubuntu-latest'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
