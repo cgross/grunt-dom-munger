@@ -8,16 +8,15 @@
 'use strict';
 
 var path = require('path');
-var fs = require('fs');
 var cheerio = require('cheerio');
 
 var toArray = function (value) {
   return (Array.isArray(value)) ? value : [value];
-}
+};
 
 module.exports = function (grunt) {
 
-  var processFile = function(f,dest,options,$,window){
+  var processFile = function (f, dest, options, $) {
     grunt.log.subhead('Processing ' + f.cyan);
 
     var updated = false;
@@ -171,10 +170,10 @@ module.exports = function (grunt) {
         } else {
           return true;
         }
-      }).forEach(function (f) {
-        var srcContents = grunt.file.read(f);
+      }).forEach(function (file) {
+        var srcContents = grunt.file.read(file);
         var $ = cheerio.load(srcContents, { lowerCaseAttributeNames: false });
-        processFile(f, dest, options, $);
+        processFile(file, dest, options, $);
       });
     });
 
