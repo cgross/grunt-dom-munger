@@ -22,6 +22,10 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
+function normalizeLineEndings(input) {
+  return input && input.replace(new RegExp('\n|\r', 'g'), '');
+}
+
 exports.dom_munger = {
   setUp: function(done) {
     // setup here if necessary
@@ -30,8 +34,8 @@ exports.dom_munger = {
   default_options: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/index.html');
-    var expected = grunt.file.read('test/expected/index.html');
+    var actual = normalizeLineEndings(grunt.file.read('tmp/index.html'));
+    var expected = normalizeLineEndings(grunt.file.read('test/expected/index.html'));
     test.equal(actual, expected, 'should update the html file correctly.');
 
     test.done();
@@ -39,8 +43,8 @@ exports.dom_munger = {
   custom_options: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/concated.css');
-    var expected = grunt.file.read('test/expected/concated.css');
+    var actual = normalizeLineEndings(grunt.file.read('tmp/concated.css'));
+    var expected = normalizeLineEndings(grunt.file.read('test/expected/concated.css'));
     test.equal(actual, expected, 'should create the concat-ed css file correctly.');
 
     test.done();
@@ -48,12 +52,12 @@ exports.dom_munger = {
   order: function(test) {
     test.expect(2);
 
-    var actual = grunt.file.read('tmp/order.html');
-    var expected = grunt.file.read('test/expected/order.html');
+    var actual = normalizeLineEndings(grunt.file.read('tmp/order.html'));
+    var expected = normalizeLineEndings(grunt.file.read('test/expected/order.html'));
     test.equal(actual, expected, 'should update the file in the order expected.');
 
-    actual = grunt.file.read('tmp/read_order.txt');
-    expected = grunt.file.read('test/expected/read_order.txt');
+    actual = normalizeLineEndings(grunt.file.read('tmp/read_order.txt'));
+    expected = normalizeLineEndings(grunt.file.read('test/expected/read_order.txt'));
     test.equal(actual, expected, 'should save the read elements ensuring that the elements were read before the HTML was updated.');
 
     test.done();
@@ -61,8 +65,8 @@ exports.dom_munger = {
   callback_return_false: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('test/fixtures/formatted.html');
-    var expected = grunt.file.read('test/fixtures/formatted_expected.html');
+    var actual = normalizeLineEndings(grunt.file.read('test/fixtures/formatted.html'));
+    var expected = normalizeLineEndings(grunt.file.read('test/fixtures/formatted_expected.html'));
     test.equal(actual, expected, 'should not modify the source files when callback returns false.');
 
     test.done();

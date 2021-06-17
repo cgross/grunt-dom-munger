@@ -45,6 +45,6 @@
     "cheerio"
   ],
   "dependencies": {
-    "cheerio": "~0.12.4"
+    "cheerio": "^1.0.0-rc.10"
   }
 }

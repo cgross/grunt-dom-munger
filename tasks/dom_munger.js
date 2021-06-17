@@ -26,23 +26,21 @@ module.exports = function (grunt) {
         if (!option.selector || !option.attribute || !option.writeto) {
           grunt.log.error('Read config missing selector, attribute, and/or writeto options');
         } else {
-
-          var vals = $(option.selector).map(function(i,elem){
+          var values = $(option.selector)
+            .map(function (_, elem) {
               return $(elem).attr(option.attribute);
-          });
-
-          vals = vals.filter(function(item){
+            }).filter(function (_, item) {
               return item !== undefined;
-          });
+            }).toArray();
 
           if (option.isPath) {
             var relativeTo = path.dirname(grunt.file.expand(f)[0]);
-            vals = vals.map(function (val) {
+            values = values.map(function (val) {
               return path.join(relativeTo, val);
             });
           }
 
-          grunt.config(['dom_munger', 'data', option.writeto], vals);
+          grunt.config(['dom_munger', 'data', option.writeto], values);
           grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.' + option.writeto).cyan);
         }
       });
