@@ -22,7 +22,6 @@ module.exports = function(grunt) {
     grunt.log.subhead('Processing ' + f.cyan);
 
     var updated = false;
-
     if (options.read){
       options.read = toArray(options.read);
       options.read.forEach(function(option) {
@@ -39,7 +38,7 @@ module.exports = function(grunt) {
           });
 
           if (option.isPath){
-            var relativeTo = path.dirname(grunt.file.expand(f));
+            var relativeTo = path.dirname(grunt.file.expand(f)[0]);
             vals = vals.map(function(val){
               return path.join(relativeTo,val);
             });
