@@ -11,76 +11,74 @@ var path = require('path');
 var fs = require('fs');
 var cheerio = require('cheerio');
 
-var toArray = function(value) {
+var toArray = function (value) {
   return (Array.isArray(value)) ? value : [value];
 }
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   var processFile = function(f,dest,options,$,window){
-
     grunt.log.subhead('Processing ' + f.cyan);
 
     var updated = false;
-    if (options.read){
+    if (options.read) {
       options.read = toArray(options.read);
-      options.read.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.writeto){
+      options.read.forEach(function (option) {
+        if (!option.selector || !option.attribute || !option.writeto) {
           grunt.log.error('Read config missing selector, attribute, and/or writeto options');
         } else {
 
           var vals = $(option.selector).map(function(i,elem){
-            return $(elem).attr(option.attribute);
+              return $(elem).attr(option.attribute);
           });
 
           vals = vals.filter(function(item){
-            return item !== undefined;
+              return item !== undefined;
           });
 
-          if (option.isPath){
+          if (option.isPath) {
             var relativeTo = path.dirname(grunt.file.expand(f)[0]);
-            vals = vals.map(function(val){
-              return path.join(relativeTo,val);
+            vals = vals.map(function (val) {
+              return path.join(relativeTo, val);
             });
           }
 
-          grunt.config(['dom_munger','data',option.writeto],vals);
-          grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.'+option.writeto).cyan);
+          grunt.config(['dom_munger', 'data', option.writeto], vals);
+          grunt.log.writeln('Wrote ' + (option.selector + '.' + option.attribute).cyan + ' to ' + ('dom_munger.data.' + option.writeto).cyan);
         }
-
       });
     }
 
-    if (options.remove){
+    if (options.remove) {
       options.remove = toArray(options.remove);
-      options.remove.forEach(function(option) {
+      options.remove.forEach(function (option) {
         $(option).remove();
         grunt.log.writeln('Removed ' + option.cyan);
         updated = true;
       });
     }
 
-    if (options.update){
+    if (options.update) {
       options.update = toArray(options.update);
-      options.update.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.value){
+      options.update.forEach(function (option) {
+        if (!option.selector || !option.attribute || !option.value) {
           grunt.log.error('Update config missing selector, attribute, and/or value options');
         } else {
-          $(option.selector).attr(option.attribute,option.value);
+          $(option.selector).attr(option.attribute, option.value);
           grunt.log.writeln('Updated ' + option.attribute.cyan + ' to ' + option.value.cyan);
           updated = true;
         }
       });
     }
 
-    if (options.prefix){
+    if (options.prefix) {
       options.prefix = toArray(options.prefix);
-      options.prefix.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.value){
+      options.prefix.forEach(function (option) {
+        if (!option.selector || !option.attribute || !option.value) {
           grunt.log.error('Prefix config missing selector, attribute, and/or value options');
         } else {
           $(option.selector).each(function () {
-             $(this).attr(option.attribute, option.value + $(this).attr(option.attribute));
+            $(this).attr(option.attribute, option.value + $(this).attr(option.attribute));
           });
           grunt.log.writeln('Prefixed ' + option.attribute.cyan + ' with ' + option.value.cyan);
           updated = true;
@@ -88,14 +86,14 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.suffix){
+    if (options.suffix) {
       options.suffix = toArray(options.suffix);
-      options.suffix.forEach(function(option) {
-        if (!option.selector || !option.attribute || !option.value){
+      options.suffix.forEach(function (option) {
+        if (!option.selector || !option.attribute || !option.value) {
           grunt.log.error('Suffix config missing selector, attribute, and/or value options');
         } else {
           $(option.selector).each(function () {
-             $(this).attr(option.attribute, $(this).attr(option.attribute) + option.value);
+            $(this).attr(option.attribute, $(this).attr(option.attribute) + option.value);
           });
           grunt.log.writeln('Suffixed ' + option.attribute.cyan + ' with ' + option.value.cyan);
           updated = true;
@@ -103,10 +101,10 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.append){
+    if (options.append) {
       options.append = toArray(options.append);
-      options.append.forEach(function(option) {
-        if (!option.selector || !option.html){
+      options.append.forEach(function (option) {
+        if (!option.selector || !option.html) {
           grunt.log.error('Append config missing selector and/or html options');
         } else {
           $(option.selector).append(option.html);
@@ -116,10 +114,10 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.prepend){
+    if (options.prepend) {
       options.prepend = toArray(options.prepend);
-      options.prepend.forEach(function(option) {
-        if (!option.selector || !option.html){
+      options.prepend.forEach(function (option) {
+        if (!option.selector || !option.html) {
           grunt.log.error('Prepend config missing selector and/or html options');
         } else {
           $(option.selector).prepend(option.html);
@@ -129,10 +127,10 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.text){
+    if (options.text) {
       options.text = toArray(options.text);
-      options.text.forEach(function(option) {
-        if (!option.selector || !option.text){
+      options.text.forEach(function (option) {
+        if (!option.selector || !option.text) {
           grunt.log.error('Text config missing selector and/or text options');
         } else {
           $(option.selector).text(option.text);
@@ -142,51 +140,44 @@ module.exports = function(grunt) {
       });
     }
 
-    if (options.callback){
+    if (options.callback) {
       // don't update if callback function returns false
       updated = options.callback($, f) !== false;
     }
 
-    if (updated){
+    if (updated) {
       var updatedContents = $.html();
-      grunt.file.write(dest || f,updatedContents);
+      grunt.file.write(dest || f, updatedContents);
       grunt.log.writeln('File ' + (dest || f).cyan + ' created/updated.');
     }
-
   };
 
-  grunt.registerMultiTask('dom_munger', 'Read and manipulate html.', function() {
-
+  grunt.registerMultiTask('dom_munger', 'Read and manipulate html.', function () {
     var options = this.options({});
     var done = this.async();
 
-    if (this.filesSrc.length > 1 && this.data.dest){
+    if (this.filesSrc.length > 1 && this.data.dest) {
       grunt.log.error('Dest cannot be specified with multiple src files.');
       done(false);
     }
 
-    this.files.forEach(function(f) {
-
+    this.files.forEach(function (f) {
       var dest = f.dest;
 
-      f.src.filter(function(filepath) {
+      f.src.filter(function (filepath) {
         if (!grunt.file.exists(filepath)) {
           grunt.log.warn('Source file "' + filepath + '" not found.');
           return false;
         } else {
           return true;
         }
-      }).forEach(function(f){
-
+      }).forEach(function (f) {
         var srcContents = grunt.file.read(f);
-
-        var $ = cheerio.load(srcContents,{lowerCaseAttributeNames:false});
-        processFile(f,dest,options,$);
-
+        var $ = cheerio.load(srcContents, { lowerCaseAttributeNames: false });
+        processFile(f, dest, options, $);
       });
     });
 
     done();
   });
-
 };
