@@ -37,6 +37,7 @@ jobs:
         id: version
         with:
           minimum-major-minor: 4.0
+          tag-prefix: v
       - name: Build Version
         run: |
           echo "MINVERVERSIONOVERRIDE=${{steps.version.outputs.version}}" >> $GITHUB_ENV
