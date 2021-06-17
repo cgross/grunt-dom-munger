@@ -31,9 +31,9 @@
     "grunt": "^1.1.0",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-jshint": "^2.1.0",
-    "grunt-contrib-nodeunit": "^2.1.0",
-    "grunt-contrib-uglify": "^4.0.1"
+    "grunt-contrib-jshint": "^3.0.0",
+    "grunt-contrib-nodeunit": "^3.0.0",
+    "grunt-contrib-uglify": "^5.0.1"
   },
   "peerDependencies": {
     "grunt": "^1.1.0"
