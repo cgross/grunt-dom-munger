@@ -1,4 +1,4 @@
-# grunt-dom-munger [![Build Status](https://travis-ci.org/cgross/grunt-dom-munger.png?branch=master)](https://travis-ci.org/cgross/grunt-dom-munger) [![Build](https://github.com/cgross/grunt-dom-munger/actions/workflows/build.yml/badge.svg)](https://github.com/cgross/grunt-dom-munger/actions/workflows/build.yml)
+# grunt-dom-munger [![Build](https://github.com/cgross/grunt-dom-munger/actions/workflows/build.yml/badge.svg)](https://github.com/cgross/grunt-dom-munger/actions/workflows/build.yml)
 
 > Read and manipulate HTML documents using CSS selectors.
 
