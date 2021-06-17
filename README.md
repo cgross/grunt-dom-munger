@@ -9,7 +9,8 @@ Use this task to read and transform your HTML documents.  Typical use cases incl
 * Add, update, or remove any DOM elements for any reason.
 
 ## Getting Started
-This plugin requires Grunt `~0.4.1` and Node `>=0.8`.
+
+This plugin requires Grunt `~1.1.0` and Node `>=10.0`.
 
 ```shell
 npm install grunt-dom-munger --save-dev
@@ -288,9 +289,11 @@ grunt.initConfig({
 ```
 
 ## Release History
- * v3.4.0 - Update task actions ordering.  Reads always first, removes second, all others after.
- * v3.3.0 - All task actions can now be arrays for multiple actions per type.
- * v3.2.0 - Added second `file` argument to callback (#15).
+
+* v4.0.0 - Updated to grunt 1.1.0 and bumped min node version to 10.0. **Please note that whitespace/line endings may be removed, this is caused by parse5 producing a spec-compliant DOM structure**
+* v3.4.0 - Update task actions ordering.  Reads always first, removes second, all others after.
+* v3.3.0 - All task actions can now be arrays for multiple actions per type.
+* v3.2.0 - Added second `file` argument to callback (#15).
 * v3.1.0 - Prefix and suffix options added.  Fixes for issues #8, #10, and #11.
 * v3.0.0 - Removed `jsdom` engine as `cheerio` is as good without needing contextify.
 * v2.0.0 - Moved to `cheerio` engine.  Upgraded jquery to v2.
